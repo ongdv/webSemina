@@ -8,10 +8,8 @@
     <div class='todoList'>
       <div class="todoListContents" v-for='item in lists' :key='item.num' v-on:click='completeTodo(item.num)'>
           <p class='printContents' v-on:click='modify(item.num)'>{{item.contents}}</p>
-          <p class='modifyWrap'><input type="text" class='modifyContents' value='' v-on:keypress='modifyEnterKeyDown(item.num)' autofocus></p>
-          <p class='delWrap'>
-            <button class='delBtn' v-on:click='deleteTodo(item.num)'>삭제</button>
-          </p>
+          <p class='modifyWrap'><input type="text" class='modifyContents' value='' v-on:blur='modifyStop(item.num)' v-on:keypress='modifyEnterKeyDown(item.num)'></p>
+          <p class='delWrap'><button class='delBtn' v-on:click='deleteTodo(item.num)'>삭제</button></p>
           <p class='printDate'>{{item.date}}</p>
       </div>
     </div>
@@ -84,6 +82,7 @@ export default {
       modifyWrap.style.position = 'relative'
       inputObj.style.display = 'block'
       inputObj.value = obj.innerHTML
+      inputObj.focus()
     },
     modifyEnterKeyDown (i) {
       let j
@@ -103,7 +102,26 @@ export default {
         modifyWrap.style.display = 'none'
         modifyWrap.style.position = 'absolute'
         inputObj.style.display = 'none'
+        inputObj.blur()
       }
+    },
+    modifyStop (i) {
+      let j
+      for (j = 0; j <= this.lists.length; j++) {
+        if (this.lists[j].num === i) {
+          break
+        }
+      }
+      let obj = document.getElementsByClassName('printContents')[j]
+      let modifyWrap = document.getElementsByClassName('modifyWrap')[j]
+      let inputObj = document.getElementsByClassName('modifyContents')[j]
+      this.lists[j].contents = inputObj.value
+      obj.innerHTML = inputObj.value
+      obj.style.display = 'block'
+      obj.style.position = 'relative'
+      modifyWrap.style.display = 'none'
+      modifyWrap.style.position = 'absolute'
+      inputObj.style.display = 'none'
     },
     completeTodo (i) {
       let j
