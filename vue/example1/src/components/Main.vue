@@ -6,7 +6,7 @@
       <span><button class='add' v-on:click='addTodo'>추가</button></span>
     </div>
     <div class='todoList'>
-      <div class="todoListContents" v-for='item in lists' :key='item.num'>
+      <div class="todoListContents" v-for='item in lists' :key='item.num' v-on:click='completeTodo(item.num)'>
           <p class='printContents' v-on:click='modify(item.num)'>{{item.contents}}</p>
           <p class='modifyWrap'><input type="text" class='modifyContents' value='' v-on:keypress='modifyEnterKeyDown(item.num)' autofocus></p>
           <p class='delWrap'>
@@ -25,7 +25,7 @@ export default {
     return {
       counter: 1,
       lists: [
-        {num: 0, contents: 'Vue.js 공부하기', date: '2018-07-06'}
+        {num: 0, contents: 'Vue.js 공부하기', date: '2018-07-06', complete: 0}
       ]
     }
   },
@@ -68,6 +68,7 @@ export default {
       }
     },
     modify (i) {
+      event.stopPropagation()
       let j
       for (j = 0; j <= this.lists.length; j++) {
         if (this.lists[j].num === i) {
@@ -95,6 +96,7 @@ export default {
       let modifyWrap = document.getElementsByClassName('modifyWrap')[j]
       let inputObj = document.getElementsByClassName('modifyContents')[j]
       if (window.event.keyCode === 13) {
+        this.lists[j].contents = inputObj.value
         obj.innerHTML = inputObj.value
         obj.style.display = 'block'
         obj.style.position = 'relative'
@@ -102,6 +104,22 @@ export default {
         modifyWrap.style.position = 'absolute'
         inputObj.style.display = 'none'
       }
+    },
+    completeTodo (i) {
+      let j
+      for (j = 0; j <= this.lists.length; j++) {
+        if (this.lists[j].num === i) {
+          break
+        }
+      }
+      let obj = document.getElementsByClassName('todoListContents')[j]
+      if (this.lists[j].complete === 0) {
+        this.lists[j].complete = 1
+        obj.style.opacity = '0.4'
+        return
+      }
+      obj.style.opacity = '1'
+      this.lists[j].complete = 0
     }
   }
 }

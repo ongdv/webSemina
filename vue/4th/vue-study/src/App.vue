@@ -19,9 +19,5 @@ export default {
 </script>
 
 <style>
-div{
-    font-size:30px;
-    background: #000;
-    color:aqua;
-}
+
 </style>
