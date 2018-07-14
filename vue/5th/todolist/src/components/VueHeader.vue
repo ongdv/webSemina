@@ -3,7 +3,6 @@
     <div class="header-container">
       <div class="header-item-container">
         <span class="fas fa-bars">
-          index
         </span>
       </div>
       <div class="header-item-container">
