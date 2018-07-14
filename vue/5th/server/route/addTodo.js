@@ -13,7 +13,6 @@ module.exports =(app, con) => {
                     return;
                 }else{
                     result['success'] = 1;
-                    console.log(row);
                     res.send(result);
                     return;
                 }
@@ -23,6 +22,30 @@ module.exports =(app, con) => {
             res.send(result);
             return;
         }
-        
+    });
+
+    app.delete('/todo', (req, res) => {
+        var post = req.body;
+        var result ={};
+        var sql = "SELECT * FROM todo_list WHERE idx = " + post['num'];
+        con.query(sql, (err, row) => {
+            if(err){
+                console.log(err);
+                result['success'] = 0;
+                result['err'] = 'DB Error';
+                res.send(result);
+                return;
+            }else{
+                if(row.length ===0 ){
+                    reuslt['success']=0;
+                    result['err'] = 'Invalid Index';
+                    res.send(result);
+                    console.log(result);
+                    return;
+                }else{
+                    
+                }
+            }
+        });
     });
 }

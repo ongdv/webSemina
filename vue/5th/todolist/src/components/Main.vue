@@ -1,15 +1,17 @@
 <template>
   <div>
+    <span class="alert" ref='alert'></span>
     <div class="input-group mb-3">
       <input v-model='newTodo' v-on:keypress='addTodoEnter' type="text" class="form-control" placeholder="할일 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
       <div class="input-group-append">
         <button v-on:click='addTodo' class="btn btn-outline-secondary" type="button" id="button-addon2">추가</button>
       </div>
     </div>
-    <div>  
-      <div class="todo-item-container" v-for='todo in todoLists' :key='todo.index'>
+    <div>
+      
+      <div class="todo-item-container" v-for='todo in todoLists' :key='todo.num'>
         <div>
-          <span class="fas fa-check" v-bind:class='[todo.show]' v-on:click='completeTodo(todo)'></span>
+          <span class="fas fa-check" v-bind:class='[todo.complete]' v-on:click='completeTodo(todo)'></span>
         </div>
         <div>
           {{todo.item}}
@@ -38,14 +40,14 @@ export default {
           return;
       }
       let value = {
-        show: '',
+        complete: '',
         item: this.newTodo
       }
       this.todoLists.push(value)
       this.setTodos(value.item)
       console.log(value)
       this.newTodo = ""
-      
+      this.$toast(this.$refs.alert, 'Success!', 'success')
     },
     addTodoEnter () {
       if (window.event.keyCode === 13) {
@@ -53,29 +55,37 @@ export default {
       }
     },
     completeTodo (i) {
-      if (i.show === 'complete') {
-        i.show = ''
+      if (i.complete === 'complete') {
+        i.complete = ''
       }else{
-        i.show='complete'
+        i.complete='complete'
       }
     },
     deleteTodo (i) {
       for(let j = 0; j <= this.todoLists.length; j++){
         if (this.todoLists[j].item === i.item) {
-          this.todoLists.splice(j, 1)
+          this.$http.post("http://192.168.64.184:4444/todo", {item:this.todolists[j].num})
+          .then((result) => {
+            this.todoLists.splice(j, 1)
+          })
           break
         }
       }
     },
     getTodos () {
-      this.$http.get("http://10.1.72.252:3000/todo")
+      this.$http.get("http://192.168.64.184:4444/list")
       .then((result) => {
-        this.todoLists = result.data;
+        console.log(result);
+        if (result['success'] === 0) {
+          alert(result['err']);
+          return;
+        }
+        this.todoLists = result['data']['data'];
       })
     },
     setTodos (todo) {
       console.log(todo)
-      this.$http.post("http://10.1.72.252:3000/todo", {item:todo})
+      this.$http.post("http://192.168.64.184:4444/todo", {item:todo})
       .then((result) => {
         console.log(result)
       })
@@ -115,5 +125,14 @@ export default {
 }
 .complete{
   color:dodgerblue;
+}
+.alert{
+  right:5%;
+  position: absolute;
+}
+@media screen and (max-width: 800px){
+  .alert{
+    right:30%;
+  }
 }
 </style>

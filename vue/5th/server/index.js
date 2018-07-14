@@ -16,11 +16,17 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 var con = mysql.createConnection({
     host : "localhost",
     user : "root",
     password : "package.json",
-    database : "vue_todo_list"
+    database : "vue_todo_cli"
 });
 
 con.connect(function(err){
