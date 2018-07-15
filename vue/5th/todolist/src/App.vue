@@ -27,7 +27,6 @@ export default {
     info () {
       this.$toast(this.$refs.info, 'Information!', 'info', 1000, 100)
     },
-
     error () {
       this.$toast(this.$refs.error, 'Oops!', 'error', 2000, 500, 600)
     }

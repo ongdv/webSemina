@@ -1,32 +1,27 @@
 <template>
   <div>
     <span class="alert" ref='alert'></span>
-    <div class="input-group mb-3">
-      <input v-model='newTodo' v-on:keypress='addTodoEnter' type="text" class="form-control" placeholder="할일 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
-      <div class="input-group-append">
-        <button v-on:click='addTodo' class="btn btn-outline-secondary" type="button" id="button-addon2">추가</button>
-      </div>
-    </div>
-    <div>
-      
-      <div class="todo-item-container" v-for='todo in todoLists' :key='todo.num'>
-        <div>
-          <span class="fas fa-check" v-bind:class='[todo.complete]' v-on:click='completeTodo(todo)'></span>
-        </div>
-        <div>
-          {{todo.item}}
-        </div>
-        <div>
-          <span class="fas fa-trash-alt" v-on:click='deleteTodo(todo)'></span>
-        </div>
-      </div>
-    </div>
+    <vue-input @addTodo="addInputData"/>
+    <vue-lists v-for="(todo, index) in todoLists"
+               v-bind:key="index"
+               v-bind:index="index"
+               v-bind:title="todo.todo"
+               v-bind:complete="todo.complete"
+               @remove="remove"
+               @complete="complete"
+    />
   </div>
 </template>
 
 <script>
+import VueLists from '@/components/VueLists'
+import VueInput from '@/components/VueInput'
 export default {
   name: 'Main',
+  components: {
+    vueLists: VueLists,
+    vueInput: VueInput
+  },
   data () {
     return {
       newTodo: '',
@@ -34,65 +29,29 @@ export default {
     }
   },
   methods: {
-    addTodo () {
-      if (this.newTodo === '') {
-          alert('요소없음')
-          return;
-      }
-      let value = {
-        complete: '',
-        item: this.newTodo
-      }
-      this.todoLists.push(value)
-      this.setTodos(value.item)
-      console.log(value)
-      this.newTodo = ""
-      this.$toast(this.$refs.alert, 'Success!', 'success')
+    addInputData (data) {
+      this.todoLists.push(data)
+      this.$toast(this.$refs.alert, 'success!', 'success')
     },
-    addTodoEnter () {
-      if (window.event.keyCode === 13) {
-        this.addTodo()
-      }
+    remove (index) {
+      this.todoLists.splice(index, 1)
     },
-    completeTodo (i) {
-      if (i.complete === 'complete') {
-        i.complete = ''
-      }else{
-        i.complete='complete'
-      }
+    complete (index) {
+      this.todoLists[index].complete = "complete"
     },
-    deleteTodo (i) {
-      for(let j = 0; j <= this.todoLists.length; j++){
-        if (this.todoLists[j].item === i.item) {
-          this.$http.post("http://192.168.64.184:4444/todo", {item:this.todolists[j].num})
-          .then((result) => {
-            this.todoLists.splice(j, 1)
-          })
-          break
-        }
-      }
-    },
-    getTodos () {
-      this.$http.get("http://192.168.64.184:4444/list")
+    getTodoLists () {
+      let id = "ong"
+      this.$http.get(`http://10.1.72.252:3000/todo/${id}`)
       .then((result) => {
         console.log(result);
-        if (result['success'] === 0) {
-          alert(result['err']);
-          return;
-        }
-        this.todoLists = result['data']['data'];
-      })
-    },
-    setTodos (todo) {
-      console.log(todo)
-      this.$http.post("http://192.168.64.184:4444/todo", {item:todo})
-      .then((result) => {
-        console.log(result)
       })
     }
   },
-  created() {
-    this.getTodos();
+  created () {
+    this.getTodoLists();
+  },
+  updated() {
+    this.getTodoLists();
   },
 }
 </script>
