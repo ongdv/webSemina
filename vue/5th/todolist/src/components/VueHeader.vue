@@ -2,7 +2,7 @@
   <div>
     <div class="header-container">
       <div class="header-item-container">
-        <span class="fas fa-bars">
+        <span class="fas fa-bars" v-on:click='open'>
         </span>
       </div>
       <div class="header-item-container">
@@ -21,6 +21,11 @@ export default {
   data () {
     return {
       msg: 'Header'
+    }
+  },
+  methods: {
+    open () {
+      this.$emit('open')
     }
   }
 }

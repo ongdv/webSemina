@@ -3,7 +3,7 @@ module.exports =(app, con) => {
         var post = req.body;
         var result = {};
         if(post['item'] != ""){
-            var sql = "INSERT INTO todo_list (item, complete) VALUES ('"+post['item']+"', '')";
+            var sql = `INSERT INTO todo_list (item, complete, id) VALUES ('${post['item']}', '','${post['id']}')`;
             con.query(sql, (err, row) => {
                 if(err){
                     result['success'] = 0;

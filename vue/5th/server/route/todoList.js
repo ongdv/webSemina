@@ -1,20 +1,30 @@
 module.exports =(app, con) => {
-    app.get('/list',(req, res) => {
+    app.get('/list/:id',(req, res) => {
+        var get = req.params.id;
         var result = {};
-        var sql = "SELECT * FROM todo_list";
-        con.query(sql, (err, data, row) => {
+        console.log(get);
+        var sql = `SELECT * FROM todo_list WHERE id='${get}'`;
+        con.query(sql, (err, row) => {
             if(err){
-                console.log(err);
                 result['success'] = 0;
-                result['err'] = 'DB Error';
-                console.log(result);
+                result['err'] = 'DB error';
+                console.log(err);
                 res.send(result);
                 return;
             }else{
-                result['success'] = 1;
-                result['data'] = data;
-                res.send(result);
-                return;
+                if(row.length !== 0){
+                    result['success'] = 1;
+                    result['row'] = row;
+                    console.log(row);
+                    res.send(row);
+                    return;
+                }else{
+                    result['success'] = 0;
+                    result['err'] = 'Empty';
+                    res.send(result);
+                    return;
+                }
+                
             }
         });
     });

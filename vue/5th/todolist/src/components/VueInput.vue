@@ -2,7 +2,7 @@
     <div class="input-group mb-3">
       <input v-on:keypress='addInputEnter' v-model="newTodo" type="text" class="form-control" placeholder="할일 입력" aria-label="Recipient's username" aria-describedby="button-addon2">
       <div class="input-group-append">
-        <button v-on:click="addInputData" class="btn btn-outline-secondary" type="button" id="button-addon2">추가</button>
+        <button v-on:click="addInputData" class="btn btn-outline-secondary" type="button" id="button-addon2">할일</button>
       </div>
     </div>
 </template>

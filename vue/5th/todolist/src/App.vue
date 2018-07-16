@@ -1,21 +1,45 @@
 <template>
   <div id="app">
-    <vue-header/>
-    <router-view/>
+    <vue-header
+      @open='open'
+    />
+    <router-view
+      @close='close'
+    />
     <vue-footer/>
+    <vue-menu
+     @close='close'
+     v-if='display'
+    />
   </div>
 </template>
 
 <script>
 import VueHeader from '@/components/VueHeader'
 import VueFooter from '@/components/VueFooter'
+import VueMenu from '@/components/VueMenu'
 export default {
   name: 'App',
   components: {
     vueHeader: VueHeader,
-    vueFooter: VueFooter
+    vueFooter: VueFooter,
+    vueMenu: VueMenu
   },
+  data () {
+    return {
+      display: false
+    }
+  }
+  ,
   methods: {
+    open () {
+      this.display = true;
+    },
+
+    close () {
+      this.display = false;
+    },
+
     success () {
       this.$toast(this.$refs.success, 'Wonderful!', 'success')
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <span class="alert" ref='alert'></span>
-    <vue-input @addTodo="addInputData"/>
+    <vue-input @addTodo="setTodoLists"/>
     <vue-lists v-for="(todo, index) in todoLists"
                v-bind:key="index"
                v-bind:index="index"
@@ -41,18 +41,23 @@ export default {
     },
     getTodoLists () {
       let id = "ong"
-      this.$http.get(`http://10.1.72.252:3000/todo/${id}`)
+      let vm = this
+      this.$http.get(`http://192.168.64.184:4444/list/${id}`)
       .then((result) => {
-        console.log(result);
+        console.log(result['data']);
+        vm.todoLists = result['data'];
+      })
+    },
+    setTodoLists (todo) {
+      this.$http.post('http://10.1.72.252:3000/todo', todo)
+      .then((result) => {
+        this.getTodoLists();
       })
     }
   },
   created () {
     this.getTodoLists();
-  },
-  updated() {
-    this.getTodoLists();
-  },
+  }
 }
 </script>
 
