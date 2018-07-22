@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        input {
+            width:15%;
+            font-size: 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <form action="/member/new" method="POST">
+        <p>
+            <label for="userName"> User Name : </label>
+            <input type="text" name="userName" id="userName" value="" placeholder="Input Name">
+        </p>
+        <p>
+            <label for="userMail"> User Mail : </label>
+            <input type="text" name="userMail" id="userMail" value="" placeholder="Input Mail">
+        </p>
+        <p>
+            <label for="userPhone"> User Phone : </label>
+            <input type="text" name="userPhone" id="userPhone" value="" placeholder="Input Phone">
+        </p>
+        <p>
+            <input type="submit" value="등록">
+        </p>
+    </form>
+  </body>
+</html>

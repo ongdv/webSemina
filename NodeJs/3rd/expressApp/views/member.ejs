@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <p><a href="/">Main</a></p>
+    <p><a href="/member/new">Go new members</a></p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>idx</th>
+                <th>name</th>
+                <th>email</th>
+                <th>phone</th>
+            </tr>
+        </thead>
+        <tbody>
+        <%
+            var arrLength = members.length;
+            for(var i=0; i<arrLength; i++){
+        %>
+            <tr>
+                <td><%=members[i].id%></td>
+                <td><a href="/member/<%=members[i].id%>"><%=members[i].name%></a></td>
+                <td><%=members[i].email%></td>
+                <td><%=members[i].phone%></td>
+            </tr>
+        <%
+            }
+        %>
+        </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        input{
+            width:10%;
+        }
+    </style>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <form action="/member/modify" method="POST">
+        <input type="hidden" name="id" value='<%=member.id%>'>
+        <p>
+            <label for="username"> User Name : </label>
+            <input type="text" id='userName' name='userName' value='<%=member.name%>' >
+        </p>
+        
+        <p>
+            <label for="userEmail">User E-Mail : </label>
+            <input type="mail" id='userEmail' name='userEmail' value="<%=member.email%>">
+        </p>
+        <p>
+            <label for="userPhoen"> User Phone : </label>
+            <input type="text" id='userPhone' name='userPhone' value="<%=member.phone%>">
+        </p>
+        <input type="submit" value="End">
+    </form>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= member.name %></h1>
+    <p><%= member.phone%> / <%=member.email%></p>
+    <a href="/member">List</a>
+    <a href="/member/modify/<%=member.id%>">Edit</a>
+    <a href="/member/delete/<%=member.id%>">Delete</a>
+  </body>
+</html>
