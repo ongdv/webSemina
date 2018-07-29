@@ -604,25 +604,98 @@ var posts = [
     }
   ]
 
+var mysql = require('mysql');
+var pool = require('../config/DBConnection').connectionPool;
   /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send(200, {
-    result : 'success',
-    status : 200,
-    posts : posts
-  });
+  var sql = 'SELECT * FROM posts ORDER BY id asc';
+  pool.getConnection((err, con) => {
+    if(err){
+        throw err;
+        return;
+    }
+    con.query(sql, (err, row) => {
+        con.release()
+        if(err){
+            console.log(err);
+            res.send(200, {
+                result: 'error',
+                status: 503
+            });
+            return;
+        }
+        console.log(row);
+        res.send(200, {
+            result : 'success',
+            status : 200,
+            posts : row
+        });
+    });
+
+  })
+
 });
 
 router.get('/:id', (req, res, next) => {
   var id = req.params.id;
-  var rid = posts.findIndex((post) => {
-    return id == post.id;
-  });
-  res.send(200, {
-    result : 'success',
-    status : 200,
-    posts : posts[rid]
-  });
+
+  var sql = 'SELECT * FROM posts where id = ?';
+  pool.getConnection((err, con) => {
+    if(err){
+        throw err;
+        return;
+    }
+    con.query(sql, [id],(err, row) => {
+        con.release()
+        if(err){
+            console.log(err);
+            res.send(200, {
+                result: 'error',
+                status: 503
+            });
+            return;
+        }
+        console.log(row);
+        res.send(200, {
+            result : 'success',
+            status : 200,
+            posts : row[0]
+        });
+    });
+
+  })
 });
 
+router.put('/', (req, res, next) => {
+    console.log(req.body);
+    var id = req.body.id;
+    var title = req.body.title;
+    var body = req.body.body;
+    
+    var rid = posts.findIndex((post) => {
+        return id == post.id
+    });
+
+    posts[rid].title = title;
+    posts[rid].body = body;
+    res.send(201, {
+        result: 'success',
+        status: 201,
+    });
+});
+
+router.delete('/:id', function(req, res, next) {
+    var id = req.params.id;
+    var rid = posts.findIndex((post) => {
+      return id == post.id;
+    });
+    posts.splice(rid, 1)
+
+    res.send(200, {
+      result : 'success',
+      status : 200,
+      posts : posts[rid]
+    });
+  });
+  
 module.exports = router;

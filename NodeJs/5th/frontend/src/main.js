@@ -15,14 +15,16 @@ import { Navbar } from 'bootstrap-vue/es/components';
 import { Button } from 'bootstrap-vue/es/components';
 
 
+axios.defaults.withCredentials=true;
+axios.defaults.baseURL = process.env.BACKEND_URL;
+
+Vue.use(axios);
 Vue.use(Navbar);
 Vue.use(Button);
 
 Vue.use(Bootstrap)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-
-
 
 
 
