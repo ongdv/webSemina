@@ -233,13 +233,10 @@ var members = [
     }
   }
 ];
-
 /* GET home page. */
-router.get('/', function(req, res, next) {
-
-  res.render('index', { title: 'Express3' });
+router.get('/', (req, res, next) => {
+  res.send({msg : 'success'})
 });
-
 router.get('/member', (req, res, next) => {
   res.render('member', { title: 'member', members : members });
 });
