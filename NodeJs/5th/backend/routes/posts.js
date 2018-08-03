@@ -662,7 +662,6 @@ router.get('/:id', (req, res, next) => {
             posts : row[0]
         });
     });
-
   })
 });
 
@@ -671,31 +670,83 @@ router.put('/', (req, res, next) => {
     var id = req.body.id;
     var title = req.body.title;
     var body = req.body.body;
-    
-    var rid = posts.findIndex((post) => {
-        return id == post.id
-    });
 
-    posts[rid].title = title;
-    posts[rid].body = body;
-    res.send(201, {
-        result: 'success',
-        status: 201,
+    var sql = `UPDATE posts SET title = ?, body = ? WHERE id = ?`; // ? injection attack protect
+    pool.getConnection((err, con) => {
+      if(err){
+        throw err;
+        return;
+      }
+      con.query(sql, [title, body, id], (err, row) =>{
+        con.release();
+        if(err){
+          console.log(err);
+          res.send(200, {
+            status: 500,
+            message: 'fail'
+          });
+          return;
+        }
+        res.send(200, {
+          result: 'success',
+          status: 201
+        })
+      });
     });
 });
 
 router.delete('/:id', function(req, res, next) {
     var id = req.params.id;
-    var rid = posts.findIndex((post) => {
-      return id == post.id;
+    console.log(id);
+    var sql = `DELETE FROM posts WHERE id = ?`;
+    pool.getConnection((err, con) => {
+      con.release();
+      con.query(sql, id, (err, row) => {
+        if(err){
+          console.log(err);
+          res.send(200, {
+            status: 500,
+            message: 'Error'
+          });
+          return;
+        }
+        res.send(200, {
+          status: 201,
+          message: 'success'
+        });
+        return;
+      });
     });
-    posts.splice(rid, 1)
+});
+  
 
-    res.send(200, {
-      result : 'success',
-      status : 200,
-      posts : posts[rid]
+router.post('/', (req, res, next) => {
+  var formData = {
+    title: req.body.title,
+    body : req.body.body
+  }
+  console.log(formData);
+  var sql = `INSERT INTO posts Set ?`;
+  pool.getConnection((err, con) => {
+    con.release();
+    if(err){
+      throw err;
+    }
+    con.query(sql, formData, (err, row) => {
+      if(err){
+        console.log(err);
+        res.send(200, {
+          status: 500,
+          message: 'fail'
+        });
+        return;
+      }
+      res.send(200, {
+        status: 201,
+        message: 'success'
+      });
+      return;
     });
   });
-  
+});
 module.exports = router;

@@ -1,7 +1,12 @@
 <template>
     <div class="container">
         <br>
-        <h1>Posts</h1>
+        <h1>
+            Posts
+            <router-link :to="{path:'new'}">
+                <button class="btn btn-primary">new</button>
+            </router-link>
+        </h1>
 
         <div class="row">
             <div class="col-3" v-for="(post, idx) in posts" :key="idx" style="padding:4px !important;">

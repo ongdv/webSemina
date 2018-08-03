@@ -8,41 +8,27 @@
         <div>
             <textarea name="" style="width:100%;" v-model="body" rows="5" ></textarea>
         </div>
-        <button class="btn btn-primary" v-on:click="save()">수정완료</button>
+        <button class="btn btn-primary" v-on:click="save()">작성완료</button>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'PostEdit',
+    name: 'PostNew',
     data () {
         return {
-            id: "",
             title: "",
-            body:""
+            body: ""
         }
     },
-    created() {
-        var id = this.$router.history.current.params.id
-        this.$set(this, 'id', id)
-        this.getPost(id)
-    },
-    methods : {
-        getPost(id){
-            this.$http.get('/posts/' + id)
-            .then(res =>{
-                this.$set(this, 'title', res.data.posts.title)
-                this.$set(this, 'body', res.data.posts.body)
-            })
-        },
+    methods: {
         save(){
             var formData = {
-                id : this.id,
                 title: this.title,
                 body: this.body
             }
             //console.log(formData);
-            this.$http.put('/posts', formData)
+            this.$http.post('/posts', formData)
             .then((res) => {
                console.log(res)
                if(res.data.status === 201){
@@ -53,6 +39,9 @@ export default {
                }
             });
         }
-    }
+    },
+    created() {
+        
+    },
 }
 </script>

@@ -6,6 +6,7 @@ import PostDetail from './PostDetail'
 import Users from './Users'
 import PostEdit from './PostEdit'
 import UserDetail from './UserDetail'
+import PostNew from './PostNew'
 
 export {
     HelloWorld,
@@ -13,5 +14,6 @@ export {
     Users,
     PostDetail,
     PostEdit,
-    UserDetail
+    UserDetail,
+    PostNew
 }

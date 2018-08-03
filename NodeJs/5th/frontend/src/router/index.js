@@ -7,7 +7,8 @@ import {
   Users,
   PostDetail,
   PostEdit,
-  UserDetail
+  UserDetail,
+  PostNew
 } from '@/components/containers'
 
 Vue.use(Router)
@@ -50,6 +51,11 @@ export default new Router({
       component: PostEdit
     },
     
+    {
+      path: '/new',
+      name: 'PostNew',
+      component: PostNew
+    }
 
   ]
 })

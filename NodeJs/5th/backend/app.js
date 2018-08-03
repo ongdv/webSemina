@@ -18,7 +18,7 @@ app.use(cors({
   origin : [
     'http://192.168.64.184:3444'
   ],
-  methods: ['get', 'post', 'put', 'delete'],
+  method: ['get', 'post', 'put', 'delete'],
   credentials: true
 }))
 
