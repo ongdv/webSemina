@@ -1,5 +1,4 @@
 <template>
-    
     <div class="container">
         <br>
         <h1>
@@ -12,7 +11,6 @@
         <hr>
         <p>{{post.body}}</p>
     </div>
-
 </template>
 
 <script>
